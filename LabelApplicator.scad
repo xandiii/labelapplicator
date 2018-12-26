@@ -4,39 +4,59 @@ $fn=200;
 
 COLOR_ALU = [0.77, 0.77, 0.8];
 
-la_width = 200;
+la_width = 230;
 la_height = 150;
 la_length = 600;
 la_material_thickness = 10;
 
 draw_upper = false;
 draw_lower = true;
-draw_aluprofile = false;
+draw_aluprofile = true;
 draw_bolt = false;
 draw_bolts = false;
 draw_sideparts = false;
 
 
+608ZZ_house();
+
 if (draw_sideparts) {
-    difference() {
-        la_sidepart();
+    union() {
+        la_sidepart_both();
 
-        translate([350, la_width - la_material_thickness, 90])
+        translate([455, la_width - 25, 100])
             rotate([90, 0, 0])
                 la_walze();
-        translate([500, la_width - la_material_thickness, 90])
+        translate([537, la_width - 25, 100])
             rotate([90, 0, 0])
                 la_walze();
+        if (draw_aluprofile) {
+            color(COLOR_ALU) {
+                translate([300, 10, 70])
+                    rotate([0, 90, 0])
+                        2020Profile(600);
+                translate([300, la_width-10, 70])
+                    rotate([0, 90, 0])
+                        2020Profile(600);
+            }
+        }
+        translate([530, 0, 65])
+            rotate([0, 0, 90])
+                608ZZ_house();
 
-    }
-}
+        translate([612, 0, 65])
+            rotate([0, 0, 90])
+                608ZZ_house();
+
+        translate([530, la_width-20, 65])
+            rotate([0, 0, 90])
+                608ZZ_house();
+
+        translate([612, la_width-20, 65])
+            rotate([0, 0, 90])
+                608ZZ_house();
 
 
-if (draw_aluprofile) {
-    color(COLOR_ALU) {
-        translate([10, 75, 5])
-            rotate([90, 0, ,0])
-                2020Profile(150);
+        
     }
 }
 
@@ -53,72 +73,88 @@ if (draw_bolts) {
 
 
 
-if (draw_upper || draw_lower) {
-    difference() {
-        union() {
-            if (draw_upper) {
-                608ZZ_Roof();        
-            }
-            if (draw_lower) {
-                translate([0, 35, 15])
-                    cube([20, 80, 20]);                //block
-            }
-        }
-        union() {
-            union() {                           //Rundungen
-                translate([-1, 45, 35])
-                    rotate([0, 90, 0])
-                        cylinder(22, d1=25, d2=25);
-                translate([-1, 105, 35])
-                    rotate([0, 90, 0])
-                        cylinder(22, d1=25, d2=25);
-                translate([-1, 20, 22.5])
-                    cube([22, 25, 25]);
-                translate([-1, 105, 22.5])
-                    cube([22, 25, 25]);
-            }
-            translate([6, 75, 35])
-                rotate([0, 90, 0])
-                    608ZZ();
-            translate([-1, 10, 80])
-                rotate([0, 90, 0])
-                    cylinder(22, d1=30, d2=30);
-            translate([10, 45 , 0])                 //fixing hole 
-                cylinder(35, d1=5.2, d2=5.2);      
-            translate([10, 45, 18])    
-                cylinder(8, d1=8.2, d2=8.2);
-            translate([10, 105 , 0])           
-                cylinder(35, d1=5.2, d2=5.2);      //fixing hole
-            translate([10, 105, 18])    
-                cylinder(8, d1=8.2, d2=8.2);
-         }
-    }
-}
-if (draw_upper) {
-    union() {                           // upper lippen
-        lippe();
-        translate([0, 150, 74])
-            rotate([180, 0, 0])
-                #lippe();
-    }
-}
-
-if (draw_lower) {
-    union() {                           // lower lippen
-        translate([0, 0, -4])
-            lippe();
-        translate([0, 150, 70])
-            rotate([180, 0, 0])
-                #lippe();
-    }
-}
-
-
 
 
 
 
 // modules
+
+module 608ZZ_house() {
+    if (draw_upper || draw_lower) {
+        difference() {
+            union() {
+                if (draw_upper) {
+                    608ZZ_Roof();        
+                }
+                if (draw_lower) {
+                    translate([0, 35, 15])
+                        //#cube([20, 80, 20]);                //block
+                        rounded_corner_box(20, 80, 20, 10);
+                }
+            }
+            union() {
+                union() {                           //Rundungen
+                    translate([-1, 45, 35])
+                        rotate([0, 90, 0])
+                            cylinder(22, d1=25, d2=25);
+                    translate([-1, 105, 35])
+                        rotate([0, 90, 0])
+                            cylinder(22, d1=25, d2=25);
+                    translate([-1, 20, 22.5])
+                        cube([22, 25, 25]);
+                    translate([-1, 105, 22.5])
+                        cube([22, 25, 25]);
+                }
+                translate([6, 75, 35])
+                    rotate([0, 90, 0])
+                        608ZZ();
+                translate([-1, 10, 80])
+                    rotate([0, 90, 0])
+                        cylinder(22, d1=30, d2=30);
+                translate([10, 45 , 0])                 //fixing hole 
+                    cylinder(35, d1=5.2, d2=5.2);      
+                translate([10, 45, 18])    
+                    cylinder(8, d1=8.2, d2=8.2);
+                translate([10, 105 , 0])           
+                    cylinder(35, d1=5.2, d2=5.2);      //fixing hole
+                translate([10, 105, 18])    
+                    cylinder(8, d1=8.2, d2=8.2);
+             }
+        }
+    }
+    if (draw_upper) {
+        union() {                           // upper lippen
+            lippe();
+            translate([0, 150, 74])
+                rotate([180, 0, 0])
+                    #lippe();
+        }
+    }
+
+    if (draw_lower) {
+        union() {                           // lower lippen
+            translate([0, 0, -4])
+                lippe();
+            translate([0, 150, 70])
+                rotate([180, 0, 0])
+                    lippe();
+        }
+    }
+
+}
+
+module lippe() {
+    difference() {
+        union() {
+            translate([10, 53, 35])
+                cylinder(4, d1=10, d2=10);
+            translate([5, 53, 35])
+                cube([10, 7, 4]);
+        }
+        translate([10, 53, 30])
+            cylinder(12, d1=3.2, d2=3.2);
+    }
+}
 
 module 608ZZ() {
     //608zz has outer diameter of 22mm
@@ -188,18 +224,6 @@ module M3() {
 }    
 
 
-module lippe() {
-    difference() {
-        union() {
-            translate([10, 53, 35])
-                cylinder(4, d1=10, d2=10);
-            translate([5, 53, 35])
-                cube([10, 7, 4]);
-        }
-        translate([10, 53, 30])
-            cylinder(12, d1=3.2, d2=3.2);
-    }
-}
 
 
 
@@ -207,33 +231,39 @@ module lippe() {
 
 
 module la_walze() {
-    cylinder(180, 56, 56);
+    cylinder(180, d1=56, d2=56);
     translate([0, 0, -30])
-        cylinder(240, 8, 8);
+        cylinder(240, d1=8, d2=8);
 }
 
 module la_set_hole_at(x, y, d) {
-        translate([x, y, 0])
-            cylinder(la_material_thickness * 2, d, d);
+        translate([x, y, -4])
+            cylinder((la_material_thickness * 2) + 2, d1=d + 0.2, d2=d + 0.2);
 }
 
-module la_sidepart_both() {
+module la_sidepart() {
     difference() {
         rounded_corner_box(la_length, la_height, 10, 20);
-        la_set_hole_at(30, 30, 10);
-        la_set_hole_at(30, 120, 10);
-        la_set_hole_at(la_length-30, 30, 10);
-        la_set_hole_at(la_length-30, 120, 10);
-        translate([la_length / 4 , -20, 0])
-            rounded_corner_box(la_length/2, 40, 10, 10);
+        la_set_hole_at(30, 30, 8);
+        la_set_hole_at(30, 120, 8);
+        la_set_hole_at(230, 120, 8);
+        la_set_hole_at(455, 100, 15);
+        la_set_hole_at(537, 100, 15);
+        la_set_hole_at(la_length-30, 30, 8);
+        la_set_hole_at(la_length-30, 120, 8);
+        translate([la_length / 4 , -20, -1])
+            rounded_corner_box(la_length / 2, 40, 14, 14);
+        translate([la_length - 180 , 100, -1])
+            rounded_corner_box(200, 60, 14, 14);
+
     }
 }
-module la_sidepart() {
+module la_sidepart_both() {
     rotate([90, 0, 0]) 
-        la_sidepart_both();
+        la_sidepart();
     translate([0, la_width + la_material_thickness, 0])
         rotate([90, 0, 0])
-            la_sidepart_both();
+            la_sidepart();
 }
 
 module rounded_corner_box(x, y, z, d)  {
