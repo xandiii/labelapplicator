@@ -108,17 +108,14 @@ module 608ZZ_house() {
                 translate([6, 75, 35])
                     rotate([0, 90, 0])
                         608ZZ();
-                translate([-1, 10, 80])
-                    rotate([0, 90, 0])
-                        cylinder(22, d1=30, d2=30);
-                translate([10, 45 , 0])                 //fixing hole 
-                    cylinder(35, d1=5.2, d2=5.2);      
+                translate([10, 45 , 0])                 
+                    cylinder(35, d1=5.4, d2=5.4);      //fixing hole  1
                 translate([10, 45, 18])    
-                    cylinder(8, d1=8.2, d2=8.2);
+                    cylinder(8, d1=8.5, d2=8.5);       //fixing hole 1 head
                 translate([10, 105 , 0])           
-                    cylinder(35, d1=5.2, d2=5.2);      //fixing hole
+                    cylinder(35, d1=5.4, d2=5.4);      //fixing hole 2
                 translate([10, 105, 18])    
-                    cylinder(8, d1=8.2, d2=8.2);
+                    cylinder(8, d1=8.5, d2=8.5);       //fixing hole 2 head
              }
         }
     }
@@ -134,10 +131,20 @@ module 608ZZ_house() {
     if (draw_lower) {
         union() {                           // lower lippen
             translate([0, 0, -4])
-                lippe();
+                difference() {
+                    lippe();
+                    translate([10, 52, 36])
+                        rotate([0, 0, 30])
+                            M3();
+                }
             translate([0, 150, 70])
                 rotate([180, 0, 0])
-                    lippe();
+                    difference() {
+                        lippe();
+                        translate([10, 52, 38])
+                            rotate([0, 0, 30])
+                                M3();
+                    }
         }
     }
 
@@ -146,13 +153,13 @@ module 608ZZ_house() {
 module lippe() {
     difference() {
         union() {
-            translate([10, 53, 35])
+            translate([10, 52, 35])
                 cylinder(4, d1=10, d2=10);
-            translate([5, 53, 35])
+            translate([5, 52, 35])
                 cube([10, 7, 4]);
         }
-        translate([10, 53, 30])
-            cylinder(12, d1=3.2, d2=3.2);
+        translate([10, 52, 30])
+            cylinder(12, d1=4.0, d2=4.0);
     }
 }
 
@@ -161,7 +168,8 @@ module 608ZZ() {
     //and inner 8mm (15mm with thread and bolt)
     //thickness of 7mm
     //adding 0.2 tolerance
-    cylinder(7.2, d1=22.2, d2=22.2);
+    translate([0, 0, 0.2])
+        cylinder(7.2, d1=22.2, d2=22.2);
     translate([0, 0, -7])
        cylinder(22, d1=15, d2=15);
 }
@@ -210,7 +218,8 @@ module M4() {
     hull() {
         for (i=[0:60:180]) {
             rotate([0, 0, i])
-            cube([7.6, 3.8, 3.4], center=true);                
+                //real: 6.95, 4.0, 3.0
+                cube([7.6, 3.8, 3.4], center=true);                
         }
     }
 }    
@@ -218,17 +227,20 @@ module M3() {
     hull() {
         for (i=[0:60:180]) {
             rotate([0, 0, i])
-            cube([6.1, 3.0, 3.0], center=true);                
+                //real: 5.5, 3.4, 2.4
+                cube([6.1, 3.2, 2.8], center=true);                
         }
     }
-}    
+}
 
-
-
-
-
-
-
+module M3_TestPrint() {
+    difference() {
+        cylinder(5, d1=10, d2=10);
+        translate([0, 0, 1])
+            M3();
+        cylinder(10, d1=3.4, d2=3.4);
+    }
+}
 
 module la_walze() {
     cylinder(180, d1=56, d2=56);
