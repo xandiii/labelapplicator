@@ -9,7 +9,7 @@ la_height = 150;
 la_length = 600;
 la_material_thickness = 10;
 
-draw_upper = false;
+draw_upper = true;
 draw_lower = true;
 draw_aluprofile = true;
 draw_bolt = false;
@@ -111,11 +111,11 @@ module 608ZZ_house() {
                 translate([10, 45 , 0])                 
                     cylinder(35, d1=5.4, d2=5.4);      //fixing hole  1
                 translate([10, 45, 18])    
-                    cylinder(8, d1=8.5, d2=8.5);       //fixing hole 1 head
+                    cylinder(h=8, d=9);       //fixing hole 1 head
                 translate([10, 105 , 0])           
                     cylinder(35, d1=5.4, d2=5.4);      //fixing hole 2
                 translate([10, 105, 18])    
-                    cylinder(8, d1=8.5, d2=8.5);       //fixing hole 2 head
+                    cylinder(h=8, d=9);       //fixing hole 2 head
              }
         }
     }
@@ -171,7 +171,7 @@ module 608ZZ() {
     translate([0, 0, 0.2])
         cylinder(7.2, d1=22.2, d2=22.2);
     translate([0, 0, -7])
-       cylinder(22, d1=15, d2=15);
+       cylinder(h=22, d=17);
 }
 module 608ZZ_Roof() {
     difference() {
