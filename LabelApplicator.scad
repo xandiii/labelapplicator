@@ -1,4 +1,5 @@
 use <libs/aluprofiles.scad>
+use <libs/roundedcornerbox.scad>
 
 $fn=200;
 
@@ -9,7 +10,7 @@ la_height = 150;
 la_length = 600;
 la_material_thickness = 10;
 
-draw_upper = true;
+draw_upper = false;
 draw_lower = true;
 draw_aluprofile = true;
 draw_bolt = false;
@@ -72,11 +73,6 @@ if (draw_bolts) {
 }
 
 
-
-
-
-
-
 // modules
 
 module 608ZZ_house() {
@@ -88,7 +84,6 @@ module 608ZZ_house() {
                 }
                 if (draw_lower) {
                     translate([0, 35, 15])
-                        //#cube([20, 80, 20]);                //block
                         rounded_corner_box(20, 80, 20, 10);
                 }
             }
@@ -109,13 +104,13 @@ module 608ZZ_house() {
                     rotate([0, 90, 0])
                         608ZZ();
                 translate([10, 45 , 0])                 
-                    cylinder(35, d1=5.4, d2=5.4);      //fixing hole  1
-                translate([10, 45, 18])    
-                    cylinder(h=8, d=9);       //fixing hole 1 head
+                    cylinder(35, d1=5.4, d2=5.4);       //fixing hole  1
+                translate([10, 45, 19])    
+                    cylinder(h=5, d=9);                 //fixing hole 1 head
                 translate([10, 105 , 0])           
-                    cylinder(35, d1=5.4, d2=5.4);      //fixing hole 2
-                translate([10, 105, 18])    
-                    cylinder(h=8, d=9);       //fixing hole 2 head
+                    cylinder(35, d1=5.4, d2=5.4);       //fixing hole 2
+                translate([10, 105, 19])    
+                    cylinder(h=5, d=9);                 //fixing hole 2 head
              }
         }
     }
@@ -168,8 +163,9 @@ module 608ZZ() {
     //and inner 8mm (15mm with thread and bolt)
     //thickness of 7mm
     //adding 0.2 tolerance
+    //-0.2 - -6.0
     translate([0, 0, 0.2])
-        cylinder(7.2, d1=22.2, d2=22.2);
+        cylinder(h=7.2, d=22.2);
     translate([0, 0, -7])
        cylinder(h=22, d=17);
 }
@@ -278,22 +274,7 @@ module la_sidepart_both() {
             la_sidepart();
 }
 
-module rounded_corner_box(x, y, z, d)  {
-    translate([d, d, 0])
-    union() {
-        cylinder(z, d , d);
-        translate([x-(2*d), 0, 0])
-            cylinder(z, d , d);
-        translate([x-(2*d), y-(2*d), 0])
-            cylinder(z, d , d);
-        translate([0, y-(2*d), 0])
-            cylinder(z, d , d);
-        translate([-d, 0, 0])
-            cube([x, y-(2*d), z]);
-        translate([0, -d, 0])
-            cube([x-(2*d), y, z]);      
-    }
-}
+
 
     
 
