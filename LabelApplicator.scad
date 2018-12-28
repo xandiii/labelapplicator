@@ -1,24 +1,26 @@
 use <libs/aluprofiles.scad>
 use <libs/roundedcornerbox.scad>
+use <CutHolder.scad>
 
 $fn=200;
 
 COLOR_ALU = [0.77, 0.77, 0.8];
+COLOR_WHITE = [0.9, 0.9, 0.8];
 
 la_width = 230;
 la_height = 150;
 la_length = 600;
 la_material_thickness = 10;
 
-draw_upper = false;
+draw_upper = true;
 draw_lower = true;
 draw_aluprofile = true;
 draw_bolt = false;
 draw_bolts = false;
-draw_sideparts = false;
+draw_sideparts = true;
 
 
-608ZZ_house();
+//608ZZ_house();
 
 if (draw_sideparts) {
     union() {
@@ -42,21 +44,33 @@ if (draw_sideparts) {
         }
         translate([530, 0, 65])
             rotate([0, 0, 90])
-                608ZZ_house();
+                608ZZ_house();                  //ball bearing house 1
 
         translate([612, 0, 65])
             rotate([0, 0, 90])
-                608ZZ_house();
+                608ZZ_house();                  //ball bearing house 2
 
         translate([530, la_width-20, 65])
             rotate([0, 0, 90])
-                608ZZ_house();
+                608ZZ_house();                  //ball bearing house 3
 
         translate([612, la_width-20, 65])
             rotate([0, 0, 90])
-                608ZZ_house();
+                608ZZ_house();                  //ball bearing house 4
+    
+        color(COLOR_WHITE) {                    //cut holder 1
+            translate([560, la_width - 20, 60])
+                rotate([90, 270, 0])
+                    cut_holder();
 
-
+            translate([350, 20, 60])            //cut holder 2
+                rotate([90, 270, 180])
+                    cut_holder();
+        }
+        translate([485, 205, 56]) //alu profile for cut holder
+            rotate([90, 0, 270])
+                alu_profile(180);
+        
         
     }
 }

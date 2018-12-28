@@ -45,14 +45,14 @@ module cut_holder() {
         union() {
             hull() {
                 translate([10, 65, 0])
-                    cylinder(h=10, d=20);
+                    cylinder(h=8, d=20);
                 translate([10, 145, 0])
-                    cylinder(h=10, d=20);
+                    cylinder(h=8, d=20);
 
                 translate([0, 75, 0])
-                    cylinder(h=10, d=20);
+                    cylinder(h=8, d=20);
                 translate([0, 135, 0])
-                    cylinder(h=10, d=20);
+                    cylinder(h=8, d=20);
 
 
             }
@@ -62,18 +62,18 @@ module cut_holder() {
                 cylinder(h=22, d=66);
             translate([-5, 75, 5])
                 rotate([0, -90, -90])
-                    #alu_profile(50);
+                    alu_profile(50);
             translate([-5, 135, 55])
                 rotate([0, 90, -90])
-                    #alu_profile(50);
+                    alu_profile(50);
 
-            translate([10, 65 , -2])                 
+            translate([10, 65 , -3])                 
                 cylinder(h=25, d=5.4);       //fixing hole  1
-            translate([10, 65, 6])   
+            translate([10, 65, 4])   
                 cylinder(h=5, d=9);          //fixing hole 1 head
-            translate([10, 145 , -2])           
+            translate([10, 145 , -3])           
                 cylinder(h=25, d=5.4);       //fixing hole 2
-            translate([10, 145, 6])    
+            translate([10, 145, 4])    
                 cylinder(h=5, d=9);          //fixing hole 2 head            
         }
     }
