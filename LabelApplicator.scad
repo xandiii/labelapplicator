@@ -12,15 +12,45 @@ la_height = 150;
 la_length = 600;
 la_material_thickness = 10;
 
-draw_upper = true;
-draw_lower = true;
-draw_aluprofile = true;
+draw_upper = false;
+draw_lower = false;
+draw_aluprofile = false;
 draw_bolt = false;
 draw_bolts = false;
-draw_sideparts = true;
+draw_sideparts = false;
+draw_stangen = false;
+draw_paper_roll = false;
+draw_paper_holder = false;
+draw_justage_bed = true;
 
 
+//Rolle mit Etiketten ist 107mm breit und 
+//hat einen Durchmesser von 135
+//Innendurchmesser 23
 //608ZZ_house();
+
+if (draw_paper_roll) {
+        paper_roll();
+}
+paper_holder();
+justage_bed();
+
+if (draw_stangen) {
+    translate([30, 245, 120])
+        set_stange();
+    translate([200, 245, 120])
+        set_stange();
+    translate([240, 245, 110])
+        set_stange();
+    translate([260, 245, 100])
+        set_stange();
+    translate([380, 245, 100])
+        set_stange();
+    translate([490, 245, 40])
+        set_stange();
+    translate([570, 245, 30])
+        set_stange();
+}
 
 if (draw_sideparts) {
     union() {
@@ -34,12 +64,12 @@ if (draw_sideparts) {
                 la_walze();
         if (draw_aluprofile) {
             color(COLOR_ALU) {
-                translate([300, 10, 70])
+                translate([425, 10, 70])
                     rotate([0, 90, 0])
-                        2020Profile(600);
-                translate([300, la_width-10, 70])
+                        2020Profile(350);
+                translate([425, la_width-10, 70])
                     rotate([0, 90, 0])
-                        2020Profile(600);
+                        2020Profile(350);
             }
         }
         translate([530, 0, 65])
@@ -67,7 +97,7 @@ if (draw_sideparts) {
                 rotate([90, 270, 180])
                     cut_holder();
         }
-        translate([485, 205, 56]) //alu profile for cut holder
+        translate([485, 205, 56])               //alu profile for cut holder
             rotate([90, 0, 270])
                 alu_profile(180);
         
@@ -88,6 +118,120 @@ if (draw_bolts) {
 
 
 // modules
+
+module justage_bed() {
+    if (draw_justage_bed) {
+        difference() {
+            hull() {
+                translate([260, 210, 100])
+                    rotate([90, 0, 0])
+                        cylinder(h=140, d=30);
+                translate([380, 210, 100])
+                    rotate([90, 0, 0])
+                        cylinder(h=140, d=30);
+            }
+            translate([260, 215, 100])
+                rotate([90, 0, 0])
+                    cylinder(h=150, d=11);
+            translate([380, 215, 100])
+                rotate([90, 0, 0])
+                    cylinder(h=150, d=11);
+            translate([385.5, 65, 80])
+                rotate([0, 0, 90])
+                    cube([150, 11, 20]);
+            translate([265.5, 65, 80])
+                rotate([0, 0, 90])
+                    cube([150, 11, 20]);
+            
+            nut_height=97.7;
+            translate([253.2, 85, nut_height])          //M3 Nut 1
+                rotate([0, 90, 0])
+                    #M3();
+            translate([230, 85, nut_height])
+                rotate([0, 90, 0])
+                    #cylinder(h=30, d=3.3);
+
+            translate([253.2, 195, nut_height])          //M3 Nut 2
+                rotate([0, 90, 0])
+                    #M3();
+            translate([230, 195, nut_height])
+                rotate([0, 90, 0])
+                    #cylinder(h=30, d=3.3);
+
+            translate([386.9, 85, nut_height])          //M3 Nut 3
+                rotate([0, 90, 0])
+                    #M3();
+            translate([380, 85, nut_height])
+                rotate([0, 90, 0])
+                    #cylinder(h=30, d=3.3);
+
+            translate([386.9, 195, nut_height])          //M3 Nut 4
+                rotate([0, 90, 0])
+                    #M3();
+            translate([380, 195, nut_height])
+                rotate([0, 90, 0])
+                    #cylinder(h=30, d=3.3);
+            
+        }
+    }
+}
+
+
+module paper_holder() {
+    if (draw_paper_holder) {
+        difference() {
+            hull() {
+                translate([30, 210, 120])
+                    rotate([90, 0, 0])
+                        cylinder(h=140, d=40);
+                translate([200, 210, 120])
+                    rotate([90, 0, 0])
+                        cylinder(h=140, d=40);
+                translate([60, 210, 60])
+                    rotate([90, 0, 0])
+                        cylinder(h=140, d=40);
+                translate([170, 210, 60])
+                    rotate([90, 0, 0])
+                        cylinder(h=140, d=40);
+            }        
+            translate([30, 245, 120])
+                rotate([90, 0, 0])
+                    cylinder(h=300, d=11);
+            translate([200, 245, 120])
+                rotate([90, 0, 0])
+                    cylinder(h=300, d=11);
+            translate([115, 200, 120])
+                rotate([90, 0, 0])
+                    cylinder(h=120,d=150); 
+            translate([205.5, 65, 60])
+                rotate([0, 0, 90])
+                    cube([150, 11, 60]);
+            translate([35.5, 65, 60])
+                rotate([0, 0, 90])
+                    cube([150, 11, 60]);
+        }
+    }
+}
+
+module set_stange() {
+    rotate([90, 0, 0])
+    union() {
+    cylinder(h=260, d=8);
+    translate([0, 0, 15])
+        cylinder(h=230, d=10);
+    };
+}
+
+module paper_roll() {
+    translate([115, 195, 120])
+        rotate([90, 0, 0])
+        difference() {
+            cylinder(h=107,d=135); 
+            translate([0,0,-1])
+                cylinder(h=109,d=23);
+        }
+}
+
 
 module 608ZZ_house() {
     if (draw_upper || draw_lower) {
@@ -268,11 +412,27 @@ module la_sidepart() {
         rounded_corner_box(la_length, la_height, 10, 20);
         la_set_hole_at(30, 30, 8);
         la_set_hole_at(30, 120, 8);
-        la_set_hole_at(230, 120, 8);
+        la_set_hole_at(200, 120, 8);
+        la_set_hole_at(240, 110, 8);
+        la_set_hole_at(260, 100, 8);
+        la_set_hole_at(380, 100, 8);
         la_set_hole_at(455, 100, 15);
-        la_set_hole_at(537, 100, 15);
-        la_set_hole_at(la_length-30, 30, 8);
+        la_set_hole_at(537, 100, 15);           
+        la_set_hole_at(la_length-30, 30, 8);    // Ein-Einroller
         la_set_hole_at(la_length-30, 120, 8);
+        la_set_hole_at(490, 40, 8);            // Abziehrohr
+        
+        
+        //holes for mounting the alu bars
+        la_set_hole_at(30, 70, 5);
+        la_set_hole_at(120, 70, 5);
+        la_set_hole_at(210, 70, 5);
+        la_set_hole_at(300, 70, 5);
+        la_set_hole_at(390, 70, 5);
+        la_set_hole_at(480, 70, 5);
+        la_set_hole_at(570, 70, 5);
+        
+        
         translate([la_length / 4 , -20, -1])
             rounded_corner_box(la_length / 2, 40, 14, 14);
         translate([la_length - 180 , 100, -1])
