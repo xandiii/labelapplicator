@@ -121,105 +121,144 @@ if (draw_bolts) {
 
 module justage_bed() {
     if (draw_justage_bed) {
-        difference() {
-            hull() {
-                translate([260, 210, 100])
+        color(COLOR_WHITE) {
+            difference() {
+                hull() {
+                    width = 30;
+                    translate([260, 210, 100])
+                        rotate([90, 0, 0])
+                            cylinder(h=width, d=30);
+                    translate([380, 210, 100])
+                        rotate([90, 0, 0])
+                            cylinder(h=width, d=30);
+                }
+                translate([260, 215, 100])
                     rotate([90, 0, 0])
-                        cylinder(h=140, d=30);
-                translate([380, 210, 100])
+                        cylinder(h=150, d=11);
+                translate([380, 215, 100])
                     rotate([90, 0, 0])
-                        cylinder(h=140, d=30);
-            }
-            translate([260, 215, 100])
-                rotate([90, 0, 0])
-                    cylinder(h=150, d=11);
-            translate([380, 215, 100])
-                rotate([90, 0, 0])
-                    cylinder(h=150, d=11);
-            translate([385.5, 65, 80])
-                rotate([0, 0, 90])
-                    cube([150, 11, 20]);
-            translate([265.5, 65, 80])
-                rotate([0, 0, 90])
-                    cube([150, 11, 20]);
-            
-            nut_height=97.7;
-            translate([253.2, 85, nut_height])          //M3 Nut 1
-                rotate([0, 90, 0])
-                    #M3();
-            translate([230, 85, nut_height])
-                rotate([0, 90, 0])
-                    #cylinder(h=30, d=3.3);
+                        cylinder(h=150, d=11);
+                translate([385.5, 65, 80])
+                    rotate([0, 0, 90])
+                        cube([150, 11, 20]);
+                translate([265.5, 65, 80])
+                    rotate([0, 0, 90])
+                        cube([150, 11, 20]);
+                
+                nut_height=98.2;
+//                translate([253.2, 85, nut_height])          //M3 Nut 1
+//                    rotate([0, 90, 0])
+//                        #M3();
+//                translate([230, 85, nut_height])
+//                    rotate([0, 90, 0])
+//                        cylinder(h=30, d=3.3);
 
-            translate([253.2, 195, nut_height])          //M3 Nut 2
-                rotate([0, 90, 0])
-                    #M3();
-            translate([230, 195, nut_height])
-                rotate([0, 90, 0])
-                    #cylinder(h=30, d=3.3);
+                translate([253.2, 195, nut_height])          //M3 Nut 2
+                    rotate([0, 90, 0])
+                        M3();
+                translate([230, 195, nut_height])
+                    rotate([0, 90, 0])
+                        cylinder(h=30, d=3.3);
 
-            translate([386.9, 85, nut_height])          //M3 Nut 3
-                rotate([0, 90, 0])
-                    #M3();
-            translate([380, 85, nut_height])
-                rotate([0, 90, 0])
-                    #cylinder(h=30, d=3.3);
+//                translate([386.9, 85, nut_height])          //M3 Nut 3
+//                    rotate([0, 90, 0])
+//                        #M3();
+//                translate([380, 85, nut_height])
+//                    rotate([0, 90, 0])
+//                        cylinder(h=30, d=3.3);
 
-            translate([386.9, 195, nut_height])          //M3 Nut 4
-                rotate([0, 90, 0])
-                    #M3();
-            translate([380, 195, nut_height])
-                rotate([0, 90, 0])
-                    #cylinder(h=30, d=3.3);
-            
-        }
-    }
+                translate([386.9, 195, nut_height])          //M3 Nut 4
+                    rotate([0, 90, 0])
+                        M3();
+                translate([380, 195, nut_height])
+                    rotate([0, 90, 0])
+                        cylinder(h=30, d=3.3);
+                
+            } //difference
+        } //color
+    } //if
 }
 
 
 module paper_holder() {
-    if (draw_paper_holder) {
-        difference() {
-            hull() {
-                translate([30, 210, 120])
+    color(COLOR_WHITE) {
+        if (draw_paper_holder) {
+            difference() {
+                hull() {
+                    translate([30, 210, 120])
+                        rotate([90, 0, 0])
+                            cylinder(h=140, d=40);
+                    translate([200, 210, 120])
+                        rotate([90, 0, 0])
+                            cylinder(h=140, d=40);
+                    translate([60, 210, 60])
+                        rotate([90, 0, 0])
+                            cylinder(h=140, d=40);
+                    translate([170, 210, 60])
+                        rotate([90, 0, 0])
+                            cylinder(h=140, d=40);
+                }        
+                translate([30, 245, 120])
                     rotate([90, 0, 0])
-                        cylinder(h=140, d=40);
-                translate([200, 210, 120])
+                        cylinder(h=300, d=11);
+                translate([200, 245, 120])
                     rotate([90, 0, 0])
-                        cylinder(h=140, d=40);
-                translate([60, 210, 60])
+                        cylinder(h=300, d=11);
+                translate([115, 200, 120])
                     rotate([90, 0, 0])
-                        cylinder(h=140, d=40);
-                translate([170, 210, 60])
-                    rotate([90, 0, 0])
-                        cylinder(h=140, d=40);
-            }        
-            translate([30, 245, 120])
-                rotate([90, 0, 0])
-                    cylinder(h=300, d=11);
-            translate([200, 245, 120])
-                rotate([90, 0, 0])
-                    cylinder(h=300, d=11);
-            translate([115, 200, 120])
-                rotate([90, 0, 0])
-                    cylinder(h=120,d=150); 
-            translate([205.5, 65, 60])
-                rotate([0, 0, 90])
-                    cube([150, 11, 60]);
-            translate([35.5, 65, 60])
-                rotate([0, 0, 90])
-                    cube([150, 11, 60]);
+                        cylinder(h=120,d=150); 
+                translate([205.5, 65, 60])
+                    rotate([0, 0, 90])
+                        cube([150, 11, 60]);
+                translate([35.5, 65, 60])
+                    rotate([0, 0, 90])
+                        cube([150, 11, 60]);
+
+                4hole_M3_stange_mount(23.2, 85, 118, 110, 178.4);
+            }
         }
     }
 }
 
+module 4hole_M3_stange_mount(nut_base_x, nut_base_y, nut_base_z, nut_base_length, nut_base_width) {
+                translate([nut_base_x, nut_base_y, nut_base_z])          //M3 Nut 1
+                    rotate([0, 90, 0])
+                        M3();
+                translate([nut_base_x-25, nut_base_y, nut_base_z])
+                    rotate([0, 90, 0])
+                        cylinder(h=30, d=3.3);
+
+                translate([nut_base_x, nut_base_y + nut_base_length, nut_base_z])          //M3 Nut 2
+                    rotate([0, 90, 0])
+                        M3();
+                translate([nut_base_x-25, nut_base_y + nut_base_length, nut_base_z])
+                    rotate([0, 90, 0])
+                        cylinder(h=30, d=3.3);
+
+                translate([nut_base_x + nut_base_width + 5, nut_base_y, nut_base_z])          //M3 Nut 3
+                    rotate([0, 90, 0])
+                        M3();
+                translate([nut_base_x + nut_base_width, nut_base_y, nut_base_z])
+                    rotate([0, 90, 0])
+                        cylinder(h=30, d=3.3);
+
+                translate([nut_base_x + nut_base_width + 5, nut_base_y + nut_base_length, nut_base_z])          //M3 Nut 4
+                    rotate([0, 90, 0])
+                        M3();
+                translate([nut_base_x + nut_base_width, nut_base_y + nut_base_length, nut_base_z])
+                    rotate([0, 90, 0])
+                        cylinder(h=30, d=3.3);
+}
+
 module set_stange() {
-    rotate([90, 0, 0])
-    union() {
-    cylinder(h=260, d=8);
-    translate([0, 0, 15])
-        cylinder(h=230, d=10);
-    };
+    color(COLOR_ALU) {    
+        rotate([90, 0, 0])
+        union() {
+            cylinder(h=260, d=8);
+            translate([0, 0, 15])
+                cylinder(h=230, d=10);
+        };
+    }
 }
 
 module paper_roll() {
@@ -409,35 +448,46 @@ module la_set_hole_at(x, y, d) {
 
 module la_sidepart() {
     difference() {
-        rounded_corner_box(la_length, la_height, 10, 20);
-        la_set_hole_at(30, 30, 8);
-        la_set_hole_at(30, 120, 8);
-        la_set_hole_at(200, 120, 8);
-        la_set_hole_at(240, 110, 8);
-        la_set_hole_at(260, 100, 8);
-        la_set_hole_at(380, 100, 8);
-        la_set_hole_at(455, 100, 15);
-        la_set_hole_at(537, 100, 15);           
-        la_set_hole_at(la_length-30, 30, 8);    // Ein-Einroller
-        la_set_hole_at(la_length-30, 120, 8);
-        la_set_hole_at(490, 40, 8);            // Abziehrohr
-        
-        
-        //holes for mounting the alu bars
-        la_set_hole_at(30, 70, 5);
-        la_set_hole_at(120, 70, 5);
-        la_set_hole_at(210, 70, 5);
-        la_set_hole_at(300, 70, 5);
-        la_set_hole_at(390, 70, 5);
-        la_set_hole_at(480, 70, 5);
-        la_set_hole_at(570, 70, 5);
-        
-        
-        translate([la_length / 4 , -20, -1])
-            rounded_corner_box(la_length / 2, 40, 14, 14);
-        translate([la_length - 180 , 100, -1])
-            rounded_corner_box(200, 60, 14, 14);
-
+        union() {
+            difference() {
+                rounded_corner_box(la_length, la_height, 10, 20);
+                translate([400, 130, 11])
+                    rotate([0, 90, 0])
+                        cube([15, 22, 22]);
+            }
+            translate([400, 130, 0])
+                cylinder(h=10, d = 40);
+        }
+        union() {
+            la_set_hole_at(30, 30, 8);
+            la_set_hole_at(30, 120, 8);
+            la_set_hole_at(200, 120, 8);
+            la_set_hole_at(240, 110, 8);
+            la_set_hole_at(260, 100, 8);
+            la_set_hole_at(380, 100, 8);
+            la_set_hole_at(455, 100, 15);
+            la_set_hole_at(537, 100, 15);           
+            la_set_hole_at(la_length-30, 30, 8);    // Ein-Einroller
+            la_set_hole_at(la_length-30, 120, 8);
+            la_set_hole_at(490, 40, 8);            // Abziehrohr
+            
+            
+            //holes for mounting the alu bars
+            la_set_hole_at(30, 70, 5);
+            la_set_hole_at(120, 70, 5);
+            la_set_hole_at(210, 70, 5);
+            la_set_hole_at(300, 70, 5);
+            la_set_hole_at(390, 70, 5);
+            la_set_hole_at(480, 70, 5);
+            la_set_hole_at(570, 70, 5);
+            
+            
+            translate([la_length / 4 , -20, -1])
+                rounded_corner_box(la_length / 2, 40, 14, 14);
+            translate([la_length - 180 , 80, -1])
+                rounded_corner_box(200, 80, 14, 14);
+            
+        }
     }
 }
 module la_sidepart_both() {
