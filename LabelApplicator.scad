@@ -12,17 +12,17 @@ la_height = 150;
 la_length = 600;
 la_material_thickness = 10;
 
-draw_upper = false;
-draw_lower = false;
-draw_aluprofile = false;
+draw_upper = true;
+draw_lower = true;
+draw_aluprofile = true;
 draw_bolt = false;
 draw_bolts = false;
-draw_sideparts = false;
-draw_stangen = false;
-draw_paper_roll = false;
-draw_paper_holder = false;
+draw_sideparts = true;
+draw_stangen = true;
+draw_paper_roll = true;
+draw_paper_holder = true;
 draw_justage_bed = true;
-
+draw_label_end_indicator_bar = true;
 
 //Rolle mit Etiketten ist 107mm breit und 
 //hat einen Durchmesser von 135
@@ -34,6 +34,17 @@ if (draw_paper_roll) {
 }
 paper_holder();
 justage_bed();
+translate([0, -31, 0])
+    justage_bed();
+translate([0, -62, 0])
+    justage_bed();
+translate([0, -93, 0])
+    justage_bed();
+translate([0, -124, 0])
+    justage_bed();
+translate([300, 230, 120])
+    label_end_indicator_bar();
+
 
 if (draw_stangen) {
     translate([30, 245, 120])
@@ -58,7 +69,14 @@ if (draw_sideparts) {
 
         translate([455, la_width - 25, 100])
             rotate([90, 0, 0])
-                la_walze();
+                union() {    
+                    la_walze();
+                    translate([0, 0, -70])
+                        kurbelwelle();
+                    translate([0, 0, -71])
+                        kurbel();
+                }
+                
         translate([537, la_width - 25, 100])
             rotate([90, 0, 0])
                 la_walze();
@@ -119,6 +137,80 @@ if (draw_bolts) {
 
 // modules
 
+module kurbel() {
+    color(COLOR_WHITE) {
+        difference() {
+            hull() {
+                cylinder(h=10, d=18);
+                translate([0, -70, 0])
+                    cylinder(h=10, d=18);
+            }
+            translate([0, 0, -1])
+            kurbelwelle();
+        }
+        hull() {
+        translate([0, -70, 0])
+            cylinder(h=10, d=18);
+        translate([0, -70, -70])
+            sphere(r=9);
+        }
+    }
+}
+
+module kurbelwelle() {
+    difference() {
+        cylinder(h=280, d=8);
+        translate([3, -5, -1])
+            cube([10, 10, 10]);
+        translate([-13, -5, -1])
+            cube([10, 10, 10]);
+    }
+}
+
+module label_end_indicator_bar() {
+    if (draw_label_end_indicator_bar) {
+        union() {
+            difference() {
+                union() {
+                    hull(){    
+                        translate([-10, 0, 0])
+                            rotate([90, 0, 0])
+                                cylinder(h=5, d=10);
+                        translate([10, 0, 0])
+                            rotate([90, 0, 0])
+                                cylinder(h=5, d=10);
+                    }
+                    hull() {
+                        translate([-10, 0, 0])
+                            rotate([90, 0, 0])
+                                cylinder(h=5, d=10);
+                        translate([-10, 0, 0])
+                            rotate([90, 0, 0])
+                                cylinder(h=10, d=3);
+
+                    }
+                    translate([-10, 0, 0])
+                        rotate([90, 0, 0])
+                            cylinder(h=100, d=3);
+                    
+                    translate([-14, -1.35, -1.35])
+                        rotate([0, 0, 0])
+                            cube([28, 2.7, 2.7]);
+
+                }
+                translate([0, -3.8, 0])
+                    rotate([90, 0, 0])
+                    M3();
+                translate([0, -7, 0])
+                    rotate([90, 0, 0])
+                    M3();
+                translate([0, 10, 0])
+                    rotate([90, 0, 0])
+                        cylinder(h=100, d=3);
+            }
+        }
+    }
+}
 module justage_bed() {
     if (draw_justage_bed) {
         color(COLOR_WHITE) {
@@ -471,6 +563,15 @@ module la_sidepart() {
             la_set_hole_at(la_length-30, 120, 8);
             la_set_hole_at(490, 40, 8);            // Abziehrohr
             
+            //hole bar for mounting the label end indicator
+            union() {
+                hull(){
+                    la_set_hole_at(390, 120, 3);
+                    la_set_hole_at(250, 120, 3);
+                }
+            }
+                    
+                    
             
             //holes for mounting the alu bars
             la_set_hole_at(30, 70, 5);
