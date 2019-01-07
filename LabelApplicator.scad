@@ -20,19 +20,34 @@ draw_bolts = false;
 draw_sideparts = true;
 draw_stangen = true;
 draw_paper_roll = true;
-draw_paper_holder = true;
+draw_paper_holder_right = true;
+draw_paper_holder_middle = true;
+draw_paper_holder_left = true;
 draw_justage_bed = true;
 draw_label_end_indicator_bar = true;
+draw_kurbel = true;
 
 //Rolle mit Etiketten ist 107mm breit und 
 //hat einen Durchmesser von 135
 //Innendurchmesser 23
 //608ZZ_house();
 
-if (draw_paper_roll) {
-        paper_roll();
+//translate([0, 0, 10])
+//    la_sidepart();
+//la_sidepart_as_2D();
+
+
+translate([0, 0, 10]) {
+    if (draw_paper_roll) {
+            paper_roll();
+    }
+
+    paper_holder_left();
+    paper_holder_middle(35);
+    paper_holder_right();    
 }
-paper_holder();
+
+
 justage_bed();
 translate([0, -31, 0])
     justage_bed();
@@ -47,11 +62,11 @@ translate([300, 230, 120])
 
 
 if (draw_stangen) {
-    translate([30, 245, 120])
+    translate([30, 245, 130])
         set_stange();
-    translate([200, 245, 120])
+    translate([200, 245, 130])
         set_stange();
-    translate([240, 245, 110])
+    translate([240, 245, 116])
         set_stange();
     translate([260, 245, 100])
         set_stange();
@@ -133,7 +148,6 @@ if (draw_bolts) {
         rotate([0, 180, 0])
             bolt();
 }
-
 
 // modules
 
@@ -271,44 +285,109 @@ module justage_bed() {
     } //if
 }
 
-
+module paper_holder_right() {
+    if (draw_paper_holder_right) {
+        difference() {
+            paper_holder();
+            
+            translate([10, 69, 0])
+                cube([210, 31, 200]);
+            translate([10, 100, 0])
+               cube([210, 40, 200]);
+            translate([10, 140, 0])
+               cube([210, 40, 200]);
+            4hole_M3_stange_mount(23.2, 85, 118, 110, 178.4);
+        }    
+    }
+}
+module paper_holder_left() {
+    if (draw_paper_holder_left) {
+        difference() {
+            paper_holder();
+            
+            translate([10, 100, 0])
+               cube([210, 40, 200]);
+            translate([10, 140, 0])
+               cube([210, 40, 200]);
+            translate([10, 180, 0])
+                cube([210, 31, 200]);
+            4hole_M3_stange_mount(23.2, 85, 118, 110, 178.4);
+        }
+    }
+}
+module paper_holder_middle(width) {
+    if (draw_paper_holder_middle) {
+        difference() {
+            paper_holder();
+            
+            translate([10, 69, 0])
+                cube([210, 120-(30+width), 200]);
+            translate([10, 211-(120-(30+width)), 0])
+                cube([210, 121-(30+width), 200]);
+            4hole_M3_stange_mount(23.2, 85, 118, 110, 178.4);
+        }
+    }
+}
 module paper_holder() {
     color(COLOR_WHITE) {
-        if (draw_paper_holder) {
-            difference() {
-                hull() {
-                    translate([30, 210, 120])
-                        rotate([90, 0, 0])
-                            cylinder(h=140, d=40);
-                    translate([200, 210, 120])
-                        rotate([90, 0, 0])
-                            cylinder(h=140, d=40);
-                    translate([60, 210, 60])
-                        rotate([90, 0, 0])
-                            cylinder(h=140, d=40);
-                    translate([170, 210, 60])
-                        rotate([90, 0, 0])
-                            cylinder(h=140, d=40);
-                }        
-                translate([30, 245, 120])
+        difference() {
+            hull() {
+                translate([30, 210, 120])
                     rotate([90, 0, 0])
-                        cylinder(h=300, d=11);
-                translate([200, 245, 120])
+                        cylinder(h=140, d=30);
+                translate([200, 210, 120])
                     rotate([90, 0, 0])
-                        cylinder(h=300, d=11);
-                translate([115, 200, 120])
-                    rotate([90, 0, 0])
-                        cylinder(h=120,d=150); 
-                translate([205.5, 65, 60])
-                    rotate([0, 0, 90])
-                        cube([150, 11, 60]);
-                translate([35.5, 65, 60])
-                    rotate([0, 0, 90])
-                        cube([150, 11, 60]);
+                        cylinder(h=140, d=30);
+                translate([115, 210, 130])
+                    rotate([90, 0 , 0])
+                        cylinder(h=140, d=155);
+            }        
+            translate([30, 245, 120])
+                rotate([90, 0, 0])
+                    cylinder(h=300, d=11);
+            translate([200, 245, 120])
+                rotate([90, 0, 0])
+                    cylinder(h=300, d=11);
+            translate([115, 200, 140])
+                rotate([90, 0, 0])
+                    cylinder(h=120,d=144.5);
+            translate([205.5, 65, 60])
+                rotate([0, 0, 90])
+                    cube([150, 11, 60]);
+            translate([35.5, 65, 60])
+                rotate([0, 0, 90])
+                    cube([150, 11, 60]);
+            translate([220, 60, 123])
+                rotate([0, 0, 90])
+                    cube([160, 240, 100]);
 
-                4hole_M3_stange_mount(23.2, 85, 118, 110, 178.4);
-            }
+            4hole_M3_stange_mount(23.2, 85, 118, 110, 178.4);
         }
+        difference() {
+            union() {
+                translate([30, 210, 120])
+                    rotate([90, 0, 0])
+                        cylinder(h=140, d=30);
+                translate([200, 210, 120])
+                    rotate([90, 0, 0])
+                        cylinder(h=140, d=30);
+
+            }
+            translate([30, 245, 120])
+                rotate([90, 0, 0])
+                    cylinder(h=300, d=11);
+            translate([200, 245, 120])
+                rotate([90, 0, 0])
+                    cylinder(h=300, d=11);
+            translate([205.5, 65, 60])
+                rotate([0, 0, 90])
+                    cube([150, 11, 60]);
+            translate([35.5, 65, 60])
+                rotate([0, 0, 90])
+                    cube([150, 11, 60]);
+            
+        }
+                    
     }
 }
 
@@ -357,7 +436,7 @@ module paper_roll() {
     translate([115, 195, 120])
         rotate([90, 0, 0])
         difference() {
-            cylinder(h=107,d=135); 
+            cylinder(h=107,d=115); 
             translate([0,0,-1])
                 cylinder(h=109,d=23);
         }
@@ -534,27 +613,70 @@ module la_walze() {
 }
 
 module la_set_hole_at(x, y, d) {
-        translate([x, y, -4])
+        translate([x, y, -2])
             cylinder((la_material_thickness * 2) + 2, d1=d + 0.2, d2=d + 0.2);
+}
+
+module la_sidepart_as_2D() {
+    difference() {
+        union() {
+            difference() {
+                rounded_corner_box_2D(la_length, la_height, 20);
+                translate([400, 130])
+                    square([22, 22]);
+            }
+            translate([400, 130])
+                circle(d=40);
+        }
+        union() {
+            tolerance = 0.2;
+            translate([30, 30]) circle(d=8 + tolerance);
+            translate([30, 130]) circle(d=8 + tolerance);
+            translate([200, 130]) circle(d=8 + tolerance);
+            translate([240, 116]) circle(d=8 + tolerance);
+            translate([260, 100]) circle(d=8 + tolerance);
+            translate([380, 100]) circle(d=8 + tolerance);
+            translate([455, 100]) circle(d=15 + tolerance);
+            translate([537, 100]) circle(d=15 + tolerance);
+            translate([la_length-30, 30]) circle(d=8 + tolerance);
+            translate([la_length-30, 120]) circle(d=8 + tolerance);
+            translate([490, 40]) circle(d=8 + tolerance);
+            hull() {
+                translate([390, 120]) circle(d=3 + tolerance);
+                translate([250, 120]) circle(d=3 + tolerance);
+            }    
+            translate([300, 70]) circle(d=5 + tolerance);
+            translate([390, 70]) circle(d=5 + tolerance);
+            translate([480, 70]) circle(d=5 + tolerance);
+            translate([570, 70]) circle(d=5 + tolerance);
+            
+            translate([la_length / 4 , -20])
+                rounded_corner_box_2D(la_length / 2, 40, 14);
+            translate([la_length - 180 , 80])
+                rounded_corner_box_2D(200, 80, 14);
+            
+        }
+    }
+
 }
 
 module la_sidepart() {
     difference() {
         union() {
             difference() {
-                rounded_corner_box(la_length, la_height, 10, 20);
+                rounded_corner_box(la_length, la_height, la_material_thickness, 20);
                 translate([400, 130, 11])
                     rotate([0, 90, 0])
                         cube([15, 22, 22]);
             }
             translate([400, 130, 0])
-                cylinder(h=10, d = 40);
+                cylinder(h=la_material_thickness, d = 40);
         }
         union() {
             la_set_hole_at(30, 30, 8);
-            la_set_hole_at(30, 120, 8);
-            la_set_hole_at(200, 120, 8);
-            la_set_hole_at(240, 110, 8);
+            la_set_hole_at(30, 130, 8);
+            la_set_hole_at(200, 130, 8);
+            la_set_hole_at(240, 116, 8);
             la_set_hole_at(260, 100, 8);
             la_set_hole_at(380, 100, 8);
             la_set_hole_at(455, 100, 15);
@@ -574,9 +696,9 @@ module la_sidepart() {
                     
             
             //holes for mounting the alu bars
-            la_set_hole_at(30, 70, 5);
-            la_set_hole_at(120, 70, 5);
-            la_set_hole_at(210, 70, 5);
+            //la_set_hole_at(30, 70, 5);
+            //la_set_hole_at(120, 70, 5);
+            //la_set_hole_at(210, 70, 5);
             la_set_hole_at(300, 70, 5);
             la_set_hole_at(390, 70, 5);
             la_set_hole_at(480, 70, 5);
@@ -591,6 +713,7 @@ module la_sidepart() {
         }
     }
 }
+
 module la_sidepart_both() {
     rotate([90, 0, 0]) 
         la_sidepart();
