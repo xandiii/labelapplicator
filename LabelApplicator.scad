@@ -18,12 +18,15 @@ draw_aluprofile = true;
 draw_bolt = false;
 draw_bolts = false;
 draw_sideparts = true;
+draw_leftsidepart = true;
+draw_rightsidepart = true;
 draw_stangen = true;
 draw_paper_roll = true;
 draw_paper_holder_right = true;
 draw_paper_holder_middle = true;
 draw_paper_holder_left = true;
 draw_justage_bed = true;
+draw_reeler = true;
 draw_label_end_indicator_bar = true;
 draw_kurbel = true;
 
@@ -32,10 +35,11 @@ draw_kurbel = true;
 //Innendurchmesser 23
 //608ZZ_house();
 
-//translate([0, 0, 10])
-//    la_sidepart();
 //la_sidepart_as_2D();
 
+if (draw_reeler) {
+    reeler();
+}
 
 translate([0, 0, 10]) {
     if (draw_paper_roll) {
@@ -74,13 +78,28 @@ if (draw_stangen) {
         set_stange();
     translate([490, 245, 40])
         set_stange();
-    translate([570, 245, 30])
+    translate([580, 245, 20])
         set_stange();
 }
 
 if (draw_sideparts) {
     union() {
-        la_sidepart_both();
+        //la_sidepart_both();
+        if (draw_leftsidepart) {
+        translate([0, 0, 0])
+            rotate([90, 0, 0])
+            linear_extrude(height=10){
+                la_sidepart_as_2D();
+            }
+        }
+
+        if (draw_rightsidepart) {
+        translate([0, 240, 0])
+            rotate([90, 0, 0])
+            linear_extrude(height=10){
+                la_sidepart_as_2D();
+            }
+        }
 
         translate([455, la_width - 25, 100])
             rotate([90, 0, 0])
@@ -150,6 +169,21 @@ if (draw_bolts) {
 }
 
 // modules
+module reeler() {
+    color(COLOR_WHITE) {
+        translate([630, 20, 75])
+            rotate([0, 180, 90])
+                608ZZ_house();
+
+        translate([630, 230, 75])
+            rotate([0, 180, 90])
+                608ZZ_house();
+    }
+    
+    translate([555, 260, 40])
+        rotate([90, 0, 0])
+            cylinder(h=260, d=8);
+}
 
 module kurbel() {
     color(COLOR_WHITE) {
@@ -621,7 +655,7 @@ module la_sidepart_as_2D() {
     difference() {
         union() {
             difference() {
-                rounded_corner_box_2D(la_length, la_height, 20);
+                rounded_corner_box_2D(la_length, la_height, 40);
                 translate([400, 130])
                     square([22, 22]);
             }
@@ -638,17 +672,23 @@ module la_sidepart_as_2D() {
             translate([380, 100]) circle(d=8 + tolerance);
             translate([455, 100]) circle(d=15 + tolerance);
             translate([537, 100]) circle(d=15 + tolerance);
-            translate([la_length-30, 30]) circle(d=8 + tolerance);
+            translate([la_length-20, 20]) circle(d=8 + tolerance);
             translate([la_length-30, 120]) circle(d=8 + tolerance);
             translate([490, 40]) circle(d=8 + tolerance);
             hull() {
                 translate([390, 120]) circle(d=3 + tolerance);
                 translate([250, 120]) circle(d=3 + tolerance);
             }    
+            //holes for reeler
+            translate([555, 40])
+                circle(d=17 + tolerance);
+
+
             translate([300, 70]) circle(d=5 + tolerance);
             translate([390, 70]) circle(d=5 + tolerance);
             translate([480, 70]) circle(d=5 + tolerance);
             translate([570, 70]) circle(d=5 + tolerance);
+
             
             translate([la_length / 4 , -20])
                 rounded_corner_box_2D(la_length / 2, 40, 14);
@@ -660,67 +700,7 @@ module la_sidepart_as_2D() {
 
 }
 
-module la_sidepart() {
-    difference() {
-        union() {
-            difference() {
-                rounded_corner_box(la_length, la_height, la_material_thickness, 20);
-                translate([400, 130, 11])
-                    rotate([0, 90, 0])
-                        cube([15, 22, 22]);
-            }
-            translate([400, 130, 0])
-                cylinder(h=la_material_thickness, d = 40);
-        }
-        union() {
-            la_set_hole_at(30, 30, 8);
-            la_set_hole_at(30, 130, 8);
-            la_set_hole_at(200, 130, 8);
-            la_set_hole_at(240, 116, 8);
-            la_set_hole_at(260, 100, 8);
-            la_set_hole_at(380, 100, 8);
-            la_set_hole_at(455, 100, 15);
-            la_set_hole_at(537, 100, 15);           
-            la_set_hole_at(la_length-30, 30, 8);    // Ein-Einroller
-            la_set_hole_at(la_length-30, 120, 8);
-            la_set_hole_at(490, 40, 8);            // Abziehrohr
-            
-            //hole bar for mounting the label end indicator
-            union() {
-                hull(){
-                    la_set_hole_at(390, 120, 3);
-                    la_set_hole_at(250, 120, 3);
-                }
-            }
-                    
-                    
-            
-            //holes for mounting the alu bars
-            //la_set_hole_at(30, 70, 5);
-            //la_set_hole_at(120, 70, 5);
-            //la_set_hole_at(210, 70, 5);
-            la_set_hole_at(300, 70, 5);
-            la_set_hole_at(390, 70, 5);
-            la_set_hole_at(480, 70, 5);
-            la_set_hole_at(570, 70, 5);
-            
-            
-            translate([la_length / 4 , -20, -1])
-                rounded_corner_box(la_length / 2, 40, 14, 14);
-            translate([la_length - 180 , 80, -1])
-                rounded_corner_box(200, 80, 14, 14);
-            
-        }
-    }
-}
 
-module la_sidepart_both() {
-    rotate([90, 0, 0]) 
-        la_sidepart();
-    translate([0, la_width + la_material_thickness, 0])
-        rotate([90, 0, 0])
-            la_sidepart();
-}
 
 
 
